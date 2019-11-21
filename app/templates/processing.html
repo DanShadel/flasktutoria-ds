@@ -1,1 +1,29 @@
-{{uri}}
+{% for song in songlist %}
+    <div>
+    	<h2 style="display:inline"> #{{song.rank}}:  </h2>
+
+    	{%for artist in song.artists %}
+    		<b style="display:inline">{{artist}}, </b>
+    	{%endfor%}
+    	
+
+    	<p> {{ song.title }}, duration: {{song.length}}, bpm: {{song.bpm}}</p>
+    	
+
+
+    </div>
+{% endfor %}
+
+
+<br><br><br>
+<div>
+{% for artist in genres%}
+
+<b> {{artist}}:</b>
+	{% for genre in genres[artist]%}
+		<p style="display:inline"> {{genre}},
+	{%endfor%}
+	</p>
+<br>
+{%endfor%}
+</div>
