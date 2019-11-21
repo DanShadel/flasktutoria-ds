@@ -3,8 +3,8 @@ from app import app
 from app.forms import URIForm
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import matplotlib.pyplot as plt
-matplotlib.use('Agg')
+
+
 
 @app.route('/')
 @app.route('/index')
