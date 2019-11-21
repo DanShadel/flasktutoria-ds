@@ -3,7 +3,7 @@ from app import app
 from app.forms import URIForm
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-
+import matplotlib.pyplot as plt
 
 
 @app.route('/')
@@ -56,6 +56,7 @@ def processing(uri):
 			'rank': i,
 			'artists': temp,
 			'title': track['track']['name'],
+			'image': track['track']['album']['images'][2]['url']
 		}
 		songlist.append(song)
 		i += 1
