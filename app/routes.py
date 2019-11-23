@@ -4,36 +4,43 @@ from app.forms import URIForm
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import matplotlib.pyplot as plt
+import numpy as np
+import mpld3
+from collections import defaultdict
 
 
 @app.route('/')
 @app.route('/index')
 
 def index():
-	user = {'username': 'Dan'}
-	return render_template('index.html', title='Home', user=user)
+	
+	return render_template('index.html', title='Home')
 
 @app.route('/uri/',  methods=['GET', 'POST'])
 
 def uri():
 	form = URIForm()
 	if form.validate_on_submit():
-		return redirect(url_for('processing', uri=form.uri.data))
+		return redirect(url_for('processing', input_url=form.input_url.data))
 	return render_template('URI.html', title='Spotify 2019', form=form)
 
 
-@app.route('/processing/<uri>')
-def processing(uri):
+@app.route('/processing/<path:input_url>')
+def processing(input_url):
 	
+
 	# Time for Chef Dan's Grade A Python Spaghetti (CDGAPS)
 	client_credentials_manager = SpotifyClientCredentials(app.config["SPOTIPY_CLIENT_ID"], app.config["SPOTIPY_CLIENT_SECRET"])
 	sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager) #Configure request thing
 
-	playlist_id = str(uri).split(':')[2]#isolate playlist identifier
+	playlist_id = str(input_url).split('/')[4]#isolate playlist identifier
+	playlist_id = playlist_id.split('%')[0]
+	
 	username='spotify'
 
 	results = sp.user_playlist(username, playlist_id) #GET THEM TRACKS BOI
 	tracks = results['tracks']
+	title = results['name']
 
 	# init a bunch of arrays
 	id_list = []
@@ -63,7 +70,9 @@ def processing(uri):
 
 	deets = []
 	genres = {}
+	count = {}
 
+	#get audio details
 	while index < len(id_list):
 
 		temp = sp.audio_features(id_list[index:index+50])
@@ -74,18 +83,126 @@ def processing(uri):
 
 		temp = sp.artists(artist_id_list[index:index+50])
 		for item in temp['artists']:
-		    if item['name'] not in genres:
-		        genres[item['name']] = item['genres']
+			if item['name'] not in genres:
+				genres[item['name']] = item['genres']
+				count[item['name']] = 1
+			else:
+				count [item['name']] += 1
+
 
 		index += 50		    
 
 
+	#Add bpm and song length to song object
 	for i, item in enumerate(songlist):
-		item['bpm'] = deets[i]['tempo']
-		item['length'] = deets[i]['duration_ms']
+		item['bpm'] = round(deets[i]['tempo'])
+		#convert ms to m:ss
+		length = deets[i]['duration_ms']
+		seconds = round(length/1000)
+		minutes = int(seconds/60)
+		seconds -= (minutes*60)
+		if seconds < 10:
+			seconds = "0" + str(seconds)
+
+		item['length'] = str(minutes) + ":" + str(seconds)
 
 
-	return	render_template('processing.html', songlist=songlist, genres=genres)
+
+
+
+
+	#Generate graphs
+	x = []
+	y = []
+	plots = []
+	fig, ax = plt.subplots()
+	labels= []
+	#ranking vs BPM
+	for song in songlist:
+	    x.append(song['bpm'])
+	    y.append(song['rank'])
+	    temp = ""
+	    for person in song['artists']:
+	    	temp += person + " "
+
+	    labels.append(song['title'] + " - " + temp + ", Rank:" + str(song['rank']) + ", BPM:" + str(song['bpm']) )
+
+	#Plot[0] settings
+	scatter = ax.scatter(x,y)
+	plt.title(title)
+	plt.ylabel('Ranking')
+	plt.xlabel('Beats per minute')
+	plt.xlim(60, 240)
+	plt.ylim(len(y) + 1, -1)
+	ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+	#plots[0] == ranking vs bpm
+	tooltip = mpld3.plugins.PointLabelTooltip(scatter,labels=labels)
+	mpld3.plugins.connect(fig,tooltip)
+	plots.append(mpld3.fig_to_html(fig))
+	
+	# Artists bar Chart
+	# more variables that I may or may not need
+	num = []
+	artist = []
+	total = 0
+	fig, ax = plt.subplots()
+	maxcount = 0
+
+	for item in count:
+		if count[item] > 1:
+			artist.append(item)
+			num.append(count[item])
+			total += count[item]
+			if count[item] > maxcount:
+				maxcount = count[item]
+
+		else:
+			total += 1
+
+	ticks = []
+	for i in range(1,maxcount+1):
+		ticks.append(i)
+
+	bar = plt.bar(artist,num,alpha = .75)
+	plt.xticks(artist, artist)
+	plt.ylabel('Appearances')
+	plt.yticks(ticks)
+	plt.title('Artist count')
+	plots.append(mpld3.fig_to_html(fig))
+
+
+	#genre percentages
+	genrecounter = defaultdict(int)
+
+	for person in count:
+		for item in genres[person]:
+			genrecounter[item] += count[person]*1
+
+	genrelist = []
+	genrecounts = []
+	other = 0
+	explode = []
+	for item in genrecounter:
+		if genrecounter[item] > 1:
+			genrelist.append(item)
+			genrecounts.append(genrecounter[item])
+			explode.append(.01)
+
+		else:
+			other += 1
+
+	explode.append(.01)
+	genrelist.append('other')
+	genrecounts.append(other)
+
+	fig, ax = plt.subplots()
+	pie = ax.pie(genrecounts, labels=genrelist, autopct='%1.1f%%', explode= explode, startangle=120)
+	ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+	plt.title('Genre percentages')
+	plt.tight_layout()
+	plots.append(mpld3.fig_to_html(fig))
+
+	return	render_template('processing.html', songlist=songlist, genres=genres, count=count,plots=plots)
 
 
 

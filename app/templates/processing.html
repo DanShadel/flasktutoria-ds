@@ -19,7 +19,7 @@
 <div>
 {% for artist in genres%}
 
-<b> {{artist}}:</b>
+<b> {{artist}}, count={{count[artist]}}:</b>
 	{% for genre in genres[artist]%}
 		<p style="display:inline"> {{genre}},
 	{%endfor%}
@@ -27,3 +27,20 @@
 <br>
 {%endfor%}
 </div>
+
+<div>
+
+    
+    <!-- <img src= '/static/ranking.png' > --> 
+</div>
+
+<div>
+
+    
+    <!-- <img src= '/static/artists_pie.png' >-->
+</div>
+
+
+{% for item in plots%}
+    {{item|safe}}
+{%endfor%}

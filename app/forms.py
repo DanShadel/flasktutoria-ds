@@ -3,5 +3,5 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 class URIForm(FlaskForm):
-    uri = StringField('URI', validators=[DataRequired()])
+    input_url = StringField('URL', validators=[DataRequired()])
     submit = SubmitField('Go!')
