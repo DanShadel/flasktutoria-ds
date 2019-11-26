@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import URIForm
+from app.forms import URLForm
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import matplotlib.pyplot as plt
@@ -10,19 +10,13 @@ from collections import defaultdict
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/url/',  methods=['GET', 'POST'])
 
-def index():
-	
-	return render_template('index.html', title='Home')
-
-@app.route('/uri/',  methods=['GET', 'POST'])
-
-def uri():
-	form = URIForm()
+def url():
+	form = URLForm()
 	if form.validate_on_submit():
 		return redirect(url_for('processing', input_url=form.input_url.data))
-	return render_template('URI.html', title='Spotify 2019', form=form)
+	return render_template('URL.html', title='Spotify 2019', form=form)
 
 
 @app.route('/processing/<path:input_url>')
@@ -33,7 +27,13 @@ def processing(input_url):
 	client_credentials_manager = SpotifyClientCredentials(app.config["SPOTIPY_CLIENT_ID"], app.config["SPOTIPY_CLIENT_SECRET"])
 	sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager) #Configure request thing
 
-	playlist_id = str(input_url).split('/')[4]#isolate playlist identifier
+
+	if str(input_url).split('/')[2] is 'user':
+		playlist_id = str(input_url).split('/')[6]
+	else:
+		playlist_id = str(input_url).split('/')[4]
+
+	# I think spotify adds a session if you're listening to music 	
 	playlist_id = playlist_id.split('%')[0]
 	
 	username='spotify'
