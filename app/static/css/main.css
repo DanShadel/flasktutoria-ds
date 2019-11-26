@@ -4,5 +4,14 @@ body {
 	font-family: proxima-nova, sans-serif;
 	font-style: normal;
 	font-weight: 100;
-	background-color: rgb(255,255,255)
+	color: #FFFFFF
+	
+}
+h1{
+	text-align: center;
+}
+.url-form{
+	display:block;
+	text-align: center;
+	margin:0;
 }

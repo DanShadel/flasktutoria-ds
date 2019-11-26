@@ -5,7 +5,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import matplotlib.pyplot as plt
 import numpy as np
-import mpld3
+#import mpld3
 from collections import defaultdict
 
 
