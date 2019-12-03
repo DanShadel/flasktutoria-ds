@@ -1,19 +1,30 @@
-<html>
-    <head>
-      {% if title %}
-      <title>{{ title }}</title>
-      {% else %}
-      <title>Welcome to this dumb shit</title>
-      {% endif %}
-    </head>
-    <body>
-        <div>test: 
-        <a href="/index">Home</a>
-        <a href="/uri">Enter URI</a>
+{% extends 'bootstrap/base.html' %}
 
-        </div>
+{% block title %}
+{{ title }}
+{% endblock %}
 
-        <hr>
-        {% block content %}{% endblock %}
-    </body>
-</html>
+{% block navbar %}
+    <nav class="navbar navbar-default">
+      <div class="navbar-header"
+        <ul class="nav navbar-nav">
+          <li><a href="{{ url_for('url') }}">Home</a></li>
+        </ul>
+      </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

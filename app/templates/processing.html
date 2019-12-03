@@ -1,3 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{id}}
+this really should update
+<br><br>
 {% for song in songlist %}
     <div>
     	<h2 style="display:inline"> #{{song.rank}}:  </h2>
@@ -28,19 +34,9 @@
 {%endfor%}
 </div>
 
-<div>
-
-    
-    <!-- <img src= '/static/ranking.png' > --> 
-</div>
-
-<div>
-
-    
-    <!-- <img src= '/static/artists_pie.png' >-->
-</div>
-
 
 {% for item in plots%}
     {{item|safe}}
 {%endfor%}
+
+{% endblock %}
