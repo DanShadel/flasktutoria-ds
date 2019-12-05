@@ -66,7 +66,7 @@ def processing(input_url):
 				'image': track['track']['album']['images'][2]['url']
 			}
 			songlist.append(song)
-			row.append(track['track']['album']['images'][1]['url'])
+			row.append(track['track']['album']['images'][2]['url'])
 			
 			if i % 10 is 0 and i is not 0:
 				artwork.append(row)
@@ -221,10 +221,10 @@ def processing(input_url):
 	except:
 		return redirect(url_for('error', playlist_id = playlist_id))
 
-@app.route('/data')
-def data():
+@app.route('/instructions')
+def instructions():
 
-	return render_template('data.html', title='Spotify 2019',)
+	return render_template('instructions.html', title='Spotify 2019',)
 
 
 @app.route('/error')

@@ -25,6 +25,7 @@ b{
 }
 .plots{
 	background-color: white;
+	padding-right: 10px;
 }
 .urlform{
 	color:white;
@@ -40,6 +41,7 @@ label{
 .nav{
 	background-color: rgb(25,20,20);
 	justify-content: end;
+	display: inline-block !important;
 }
 .fill-image{
 	width: 100%;
@@ -53,4 +55,11 @@ label{
 .row.no-gutters > [class*=" col-"] {
   padding-right: 0;
   padding-left: 0;
+}
+.maxsize{
+	width: 10%;
+	height: auto;
+}
+.nav li{
+	display: inline-block;
 }
