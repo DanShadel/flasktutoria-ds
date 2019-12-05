@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{id}}
 
 
 <!-- here we have the 10x10 grid of album images -->
+{% for row in artwork %}
+    <div class="row no-gutters">
+        <div class="col-md-1">
+        </div>
+        {% for album in row %}
+            <div class="col-md-1">
+                <img src={{album}} class="fill-image">
+            </div>
+        {% endfor %}
+    </div>
 
-
-
-
+{% endfor  %}
 
 <br><br>
+
 {% for song in songlist %}
+
+
     <div>
     	<h2 style="display:inline"> #{{song.rank}}:  </h2>
 
@@ -30,6 +40,7 @@
 
 <br><br><br>
 <div>
+<!--
 {% for artist in genres%}
 
 <b> {{artist}}, count={{count[artist]}}:</b>
@@ -41,8 +52,7 @@
 {%endfor%}
 </div>
 
-
-
+-->
 
 {% for item in plots%}
     <div class= "row">

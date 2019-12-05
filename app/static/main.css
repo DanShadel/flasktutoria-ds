@@ -41,3 +41,16 @@ label{
 	background-color: rgb(25,20,20);
 	justify-content: end;
 }
+.fill-image{
+	width: 100%;
+	height: auto;
+}
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}

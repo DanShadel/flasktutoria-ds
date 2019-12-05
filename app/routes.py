@@ -8,6 +8,7 @@ import numpy as np
 import mpld3
 from collections import defaultdict
 import sys
+import math
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/url/',  methods=['GET', 'POST'])
@@ -46,7 +47,8 @@ def processing(input_url):
 		i=1
 		artist_id_list = []
 		index = 0
-
+		artwork = []
+		row = []
 		for track in tracks['items']: #Generating a comprehensive list of tracks
 
 			track_id = track['track']['id'] # get track id
@@ -64,8 +66,16 @@ def processing(input_url):
 				'image': track['track']['album']['images'][2]['url']
 			}
 			songlist.append(song)
+			row.append(track['track']['album']['images'][1]['url'])
+			
+			if i % 10 is 0 and i is not 0:
+				artwork.append(row)
+				row = []
+
 			i += 1
 
+		# endfor
+		artwork.append(row)
 		deets = []
 		genres = {}
 		count = {}
@@ -200,7 +210,13 @@ def processing(input_url):
 		plt.tight_layout()
 		plots.append(mpld3.fig_to_html(fig))
 
-		return	render_template('processing.html', songlist=songlist, genres=genres, count=count,plots=plots,id = playlist_id)
+
+
+
+
+
+
+		return	render_template('processing.html', songlist=songlist, genres=genres, count=count,plots=plots,id = playlist_id, artwork = artwork)
 
 	except:
 		return redirect(url_for('error', playlist_id = playlist_id))
