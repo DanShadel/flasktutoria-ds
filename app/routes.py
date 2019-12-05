@@ -123,8 +123,14 @@ def processing(input_url):
 		x = []
 		y = []
 		plots = []
-		fig, ax = plt.subplots()
+		
+
+
+		
+		fig, ax = plt.subplots(figsize=(3,3))
 		labels= []
+
+
 		#ranking vs BPM
 		for song in songlist:
 		    x.append(song['bpm'])
@@ -136,12 +142,16 @@ def processing(input_url):
 		    labels.append(song['title'] + " - " + temp + ", Rank:" + str(song['rank']) + ", BPM:" + str(song['bpm']) )
 
 		#Plot[0] settings
+
 		scatter = ax.scatter(x,y)
 		plt.title(title)
 		plt.ylabel('Ranking')
 		plt.xlabel('Beats per minute')
 		plt.xlim(60, 240)
 		plt.ylim(len(y) + 1, -1)
+
+
+		plt.autoscale(enable=True,axis='both')
 		ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 		#plots[0] == ranking vs bpm
 		tooltip = mpld3.plugins.PointLabelTooltip(scatter,labels=labels)
@@ -153,7 +163,7 @@ def processing(input_url):
 		num = []
 		artist = []
 		total = 0
-		fig, ax = plt.subplots()
+		fig, ax = plt.subplots(figsize=(3,3))
 		maxcount = 0
 
 		for item in count:
@@ -167,15 +177,35 @@ def processing(input_url):
 			else:
 				total += 1
 
+		top5countnum = []
+		top5countartist = []
+		k = 0 # index for nums
+		numsongs = 0
+		# get top 5 artists
+		for i in range(0,5):
+			for j in range(0,len(num)):
+				if num[j] > numsongs:
+					numsongs = num[j]
+					k = j
+			top5countartist.append(artist[k])
+			top5countnum.append(num[k])
+			del artist[k]
+			del num[k]
+
+
+
+
+
 		ticks = []
 		for i in range(1,maxcount+1):
 			ticks.append(i)
 
-		bar = plt.bar(artist,num,alpha = .75)
-		plt.xticks(artist, artist)
+		bar = plt.bar(top5countartist,top5countnum,alpha = .75)
+		plt.xticks(top5countartist, top5countartist)
 		plt.ylabel('Appearances')
 		plt.yticks(ticks)
 		plt.title('Artist count')
+
 		plots.append(mpld3.fig_to_html(fig))
 
 
@@ -203,7 +233,9 @@ def processing(input_url):
 		genrelist.append('other')
 		genrecounts.append(other)
 
-		fig, ax = plt.subplots()
+		plt.autoscale(enable=False)
+		fig, ax = plt.subplots(figsize=(3,3))
+
 		pie = ax.pie(genrecounts, labels=genrelist, autopct='%1.1f%%', explode= explode, startangle=120)
 		ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 		plt.title('Genre percentages')
