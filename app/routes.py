@@ -66,7 +66,7 @@ def processing(input_url):
 				'image': track['track']['album']['images'][2]['url']
 			}
 			songlist.append(song)
-			row.append(track['track']['album']['images'][2]['url'])
+			row.append(track['track']['album']['images'][0]['url'])
 			
 			if i % 10 is 0 and i is not 0:
 				artwork.append(row)
