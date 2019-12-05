@@ -28,6 +28,7 @@ def processing(input_url):
 		client_credentials_manager = SpotifyClientCredentials(app.config["SPOTIPY_CLIENT_ID"], app.config["SPOTIPY_CLIENT_SECRET"])
 		sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager) #Configure request thing
 
+		playlist_id = ""
 		if str(input_url).split('/')[3] == 'user':
 			playlist_id = str(input_url).split('/')[6]
 		else:
@@ -126,7 +127,7 @@ def processing(input_url):
 		
 
 
-		
+		plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 		fig, ax = plt.subplots(figsize=(3,3))
 		labels= []
 
@@ -153,6 +154,8 @@ def processing(input_url):
 
 		plt.autoscale(enable=True,axis='both')
 		ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+		plt.subplots_adjust(left=.15, bottom=.15, right=1, top=.9, wspace=0, hspace= 0)
 		#plots[0] == ranking vs bpm
 		tooltip = mpld3.plugins.PointLabelTooltip(scatter,labels=labels)
 		mpld3.plugins.connect(fig,tooltip)
@@ -179,10 +182,12 @@ def processing(input_url):
 
 		top5countnum = []
 		top5countartist = []
-		k = 0 # index for nums
-		numsongs = 0
+		
+		
 		# get top 5 artists
 		for i in range(0,5):
+			k = 0 # index for nums
+			numsongs = 0
 			for j in range(0,len(num)):
 				if num[j] > numsongs:
 					numsongs = num[j]
@@ -206,6 +211,8 @@ def processing(input_url):
 		plt.yticks(ticks)
 		plt.title('Artist count')
 
+
+	
 		plots.append(mpld3.fig_to_html(fig))
 
 
@@ -233,13 +240,20 @@ def processing(input_url):
 		genrelist.append('other')
 		genrecounts.append(other)
 
-		plt.autoscale(enable=False)
+		
 		fig, ax = plt.subplots(figsize=(3,3))
 
-		pie = ax.pie(genrecounts, labels=genrelist, autopct='%1.1f%%', explode= explode, startangle=120)
+		
+		pie = ax.pie(genrecounts, labels=genrelist, autopct='%1.1f%%', explode= explode, startangle=120, frame=False)
 		ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+		ax.axes.get_xaxis().set_visible(False)
+		ax.axes.get_yaxis().set_visible(False)
+
+
 		plt.title('Genre percentages')
-		plt.tight_layout()
+
+
+		
 		plots.append(mpld3.fig_to_html(fig))
 
 

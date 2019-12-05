@@ -20,17 +20,18 @@
 {% endfor  %}
 </div>
 <br><br>
-
+<br><br>
 
 <div class="container">
 {% for item in plots%}
-    <div class= "row ">
-        <div class="col-md-4 col-xs-10 col-sm-10 plots">
+    <div class= "row">
+        <div class="col-md-4 col-xs-10 col-md-offset-4 col-xs-offset-1 plots">
             
                 {{item|safe}}
        
         </div>
     </div>
+    <br>
     <br>
 {%endfor%}
 </div>
