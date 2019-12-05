@@ -216,7 +216,7 @@ def processing(input_url):
 
 
 
-		return	render_template('processing.html', songlist=songlist, genres=genres, count=count,plots=plots,id = playlist_id, artwork = artwork)
+		return	render_template('processing.html', songlist=songlist, genres=genres, count=count,plots=plots,id = playlist_id, artwork = artwork, title=title)
 
 	except:
 		return redirect(url_for('error', playlist_id = playlist_id))

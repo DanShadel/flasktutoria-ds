@@ -24,8 +24,8 @@ b{
 	justify-content: end;
 }
 .plots{
-	background-color: white;
-	padding-right: 10px;
+	background-color: white !important;
+
 }
 .urlform{
 	color:white;

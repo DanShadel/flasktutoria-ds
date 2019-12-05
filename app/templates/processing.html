@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
+<br>
+<br>
+<h1> {{title}} </h1>
 <!-- here we have the 10x10 grid of album images -->
 <div class = "container">
 {% for row in artwork %}
@@ -19,6 +20,21 @@
 {% endfor  %}
 </div>
 <br><br>
+
+
+<div class="container">
+{% for item in plots%}
+    <div class= "row plots">
+        <div class="col-md-7 plots col-xs-12 col-sm-10">
+            
+                {{item|safe}}
+       
+        </div>
+    </div>
+    <br>
+{%endfor%}
+</div>
+
 
 {% for song in songlist %}
 
@@ -54,16 +70,5 @@
 </div>
 
 -->
-<div class="container">
-{% for item in plots%}
-    <div class= "row">
-        <div class="col-md-6 col-md-offset-3 plots">
-            
-                {{item|safe}}
-       
-        </div>
-    </div>
-    <br>
-{%endfor%}
-</div>
+
 {% endblock %}
