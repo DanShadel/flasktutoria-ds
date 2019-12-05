@@ -1,14 +1,21 @@
 {% extends 'bootstrap/base.html' %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='main.css')}}">
+{% endblock %}
+
+
 {% block title %}
 {{ title }}
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-default">
-      <div class="navbar-header"
-        <ul class="nav navbar-nav">
-          <li><a href="{{ url_for('url') }}">Home</a></li>
+    <nav class="navbar sticky-top navbar-default">
+      <div class="navbar-header justify-content-end">
+        <ul class="nav justify-content-end">
+          <li class="nav-item"><a href="{{ url_for('url') }}", class="btn btn-primary">Home</a></li>
         </ul>
       </div>
     </nav>

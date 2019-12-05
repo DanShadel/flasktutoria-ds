@@ -1,10 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{id}}
-this really should update
+
+
+<!-- here we have the 10x10 grid of album images -->
+{% for row in artwork %}
+    <div class="row no-gutters">
+        <div class="col-md-1">
+        </div>
+        {% for album in row %}
+            <div class="col-md-1">
+                <img src={{album}} class="fill-image">
+            </div>
+        {% endfor %}
+    </div>
+
+{% endfor  %}
+
 <br><br>
+
 {% for song in songlist %}
+
+
     <div>
     	<h2 style="display:inline"> #{{song.rank}}:  </h2>
 
@@ -23,6 +40,7 @@ this really should update
 
 <br><br><br>
 <div>
+<!--
 {% for artist in genres%}
 
 <b> {{artist}}, count={{count[artist]}}:</b>
@@ -34,9 +52,17 @@ this really should update
 {%endfor%}
 </div>
 
+-->
 
 {% for item in plots%}
-    {{item|safe}}
+    <div class= "row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class= "plots">
+                {{item|safe}}
+            </div>
+        </div>
+    </div>
+    <br>
 {%endfor%}
 
 {% endblock %}
