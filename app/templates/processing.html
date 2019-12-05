@@ -2,7 +2,14 @@
 
 {% block content %}
 {{id}}
-this really should update
+
+
+<!-- here we have the 10x10 grid of album images -->
+
+
+
+
+
 <br><br>
 {% for song in songlist %}
     <div>
@@ -35,8 +42,17 @@ this really should update
 </div>
 
 
+
+
 {% for item in plots%}
-    {{item|safe}}
+    <div class= "row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class= "plots">
+                {{item|safe}}
+            </div>
+        </div>
+    </div>
+    <br>
 {%endfor%}
 
 {% endblock %}
